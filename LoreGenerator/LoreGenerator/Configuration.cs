@@ -28,7 +28,7 @@ namespace LoreGenerator
         /// <summary>
         /// The number of years to simulate while generating the lore for the world.
         /// </summary>
-        public const int YEARS_TO_SIMULATE = 5000;
+        public const int YEARS_TO_SIMULATE = 2000;
 
         /// <summary>
         /// The oldest a character can live.
@@ -114,12 +114,12 @@ namespace LoreGenerator
         /// <summary>
         /// The minimum number of characters for each race to generate.
         /// </summary>
-        public const int MIN_POPULATION_COUNT = 400;
+        public const int MIN_POPULATION_COUNT = 1000;
 
         /// <summary>
         /// The maximum number of characters for each race to generate.
         /// </summary>
-        public const int MAX_POPULATION_COUNT = 1000;
+        public const int MAX_POPULATION_COUNT = 10000;
 
         /// <summary>
         /// The shortest a name of a race can be.
@@ -140,5 +140,50 @@ namespace LoreGenerator
         /// The longest a name of a character can be.
         /// </summary>
         public const int MAX_CHARACTER_NAME_LEN = 10;
+
+        /// <summary>
+        /// The minimum attractiveness to marry without random chance.
+        /// </summary>
+        public const int MIN_ATTRACTIVENESS_TO_MARRY = 4;
+
+        /// <summary>
+        /// The minimum wealth to marry without random chance.
+        /// </summary>
+        public const int MIN_WEALTH_TO_MARRY = 7;
+
+        /// <summary>
+        /// Percentage chance that an almost match will still happen.
+        /// </summary>
+        public const int RANDOM_MARRY_CHANCE = 30;
+
+        /// <summary>
+        /// The number of times to attempt to pair mates in a year.
+        /// </summary>
+        public const int MARRIAGE_ATTEMPTS_PER_YEAR = 3000;
+
+        /// <summary>
+        /// The minimum age before two characters can marry.
+        /// </summary>
+        public const int MIN_AGE_TO_MARRY = 18;
+
+        /// <summary>
+        /// The chance of a couple to have a child in their 20s.
+        /// </summary>
+        public const int CHANCE_OF_CHILD_20S = 50;
+
+        /// <summary>
+        /// The chance of a couple to have a child in their 30s.
+        /// </summary>
+        public const int CHANCE_OF_CHILD_30S = 25;
+
+        /// <summary>
+        /// The chance of a couple to have a child in their 40s.
+        /// </summary>
+        public const int CHANCE_OF_CHILD_40s = 10;
+
+        /// <summary>
+        /// Chance that a trait of the child will be totally different than the parents'.
+        /// </summary>
+        public const int CHANCE_OF_TRAIT_MUTATION = 20;
     }
 }

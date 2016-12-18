@@ -15,7 +15,11 @@ namespace LoreGenerator
 
             // Generate the world.
             var worldGen = new WorldGenerator();
-            worldGen.GenerateWorld();
+            World world = worldGen.GenerateWorld();
+
+            // Simulate time.
+            var simulator = new TimeSimulator(world);
+            simulator.Simulate();
 
             // Wait for user to exit.
             Console.Out.WriteLine();

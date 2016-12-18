@@ -13,15 +13,13 @@ namespace LoreGenerator
     {
         #region Properties
 
-        public string WorldName { get; set; }
-
-        public List<Continent> Continents { get; set; }
+        public World World { get; set; }
 
         #endregion
 
         #region Members
 
-        private Random theRandom = new Random(DateTime.Now.ToString().GetHashCode());
+        private static Random theRandom = new Random(DateTime.Now.ToString().GetHashCode());
 
         private NameGenerator theNameGen = new NameGenerator();
 
@@ -29,14 +27,18 @@ namespace LoreGenerator
 
         #region Public Methods
 
-        public void GenerateWorld()
+        public World GenerateWorld()
         {
+            World = new World();
+
             PrintStartMessage();
             GenerateBasicWorldInfo();
             GenerateContinents();
             GenerateContinentLandmarks();
             GenerateCreatures();
             GenerateCharacters();
+
+            return World;
         }
 
         #endregion
@@ -54,23 +56,23 @@ namespace LoreGenerator
 
         private void GenerateBasicWorldInfo()
         {
-            WorldName = theNameGen.GenerateLocationName();
-            Console.Out.WriteLine("World name is " + WorldName);
+            World.Name = theNameGen.GenerateLocationName();
+            Console.Out.WriteLine("World name is " + World.Name);
         }
 
         private void GenerateContinents()
         {
-            Continents = new List<Continent>();
+            World.Continents = new List<Continent>();
             int totalLandmass = 0;
             while (totalLandmass < Configuration.MIN_LANDMASS)
             {
                 int landmass = theRandom.Next(Configuration.MIN_CONTINENT_SIZE, Configuration.MAX_CONTINENT_SIZE);
                 totalLandmass += landmass;
                 var continent = new Continent(theNameGen.GenerateLocationName(), landmass);
-                Continents.Add(continent);
+                World.Continents.Add(continent);
             }
-            Console.Out.WriteLine("Generated " + Continents.Count + " continents:");
-            foreach(Continent c in Continents)
+            Console.Out.WriteLine("Generated " + World.Continents.Count + " continents:");
+            foreach(Continent c in World.Continents)
             {
                 Console.Out.WriteLine(c.ToString());
             }
@@ -78,7 +80,7 @@ namespace LoreGenerator
 
         private void GenerateContinentLandmarks()
         {
-            foreach(Continent continent in Continents)
+            foreach(Continent continent in World.Continents)
             {
                 continent.GenerateLandmarks();
             }
@@ -86,7 +88,7 @@ namespace LoreGenerator
 
         private void GenerateCreatures()
         {
-            foreach(Continent continent in Continents)
+            foreach(Continent continent in World.Continents)
             {
                 continent.GenerateCreatures();
             }
@@ -94,7 +96,7 @@ namespace LoreGenerator
 
         private void GenerateCharacters()
         {
-            foreach (Continent continent in Continents)
+            foreach (Continent continent in World.Continents)
             {
                 continent.GenerateCharacters();
             }

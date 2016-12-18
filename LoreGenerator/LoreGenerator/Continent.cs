@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoreGenerator
@@ -20,11 +21,13 @@ namespace LoreGenerator
 
         public Dictionary<string, List<Character>> Characters { get; set; }
 
+        public Dictionary<string, List<Couple>> Couples { get; set; }
+
         #endregion
 
         #region Members
 
-        private Random theRandom = new Random(DateTime.Now.ToString().GetHashCode());
+        private static Random theRandom = new Random(DateTime.Now.ToString().GetHashCode());
 
         private NameGenerator theNameGen = new NameGenerator();
 
@@ -120,6 +123,21 @@ namespace LoreGenerator
                 }
                 Console.WriteLine("Generated " + numCharacters + " characters of the race " + raceName + " on the continent " + Name);
             }
+        }
+
+        public void AddCouple(string race, Couple couple)
+        {
+            if(Couples == null)
+            {
+                Couples = new Dictionary<string, List<Couple>>();
+            }
+
+            if(!Couples.ContainsKey(race))
+            {
+                Couples.Add(race, new List<Couple>());
+            }
+
+            Couples[race].Add(couple);
         }
 
         #endregion

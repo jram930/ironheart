@@ -18,7 +18,7 @@ namespace LoreGenerator
 
         #region Members
 
-        private Random theRandom = new Random(DateTime.Now.ToString().GetHashCode());
+        private static Random theRandom = new Random(DateTime.Now.ToString().GetHashCode());
 
         #endregion
 
