@@ -74,9 +74,10 @@ namespace LoreGenerator
             KillCharactersByAge();
             MarryCharacters();
             ProduceChildren();
+            GenerateEvents();
             Console.Out.WriteLine("Summary of year " + year);
-            Console.Out.WriteLine( World.GetWorldPopulation() + " world population, " + YearlyDeaths + " deaths, " + YearlyMarriages + " marriages, " + YearlyBirths + " births");
-            Thread.Sleep(1000);
+            Console.Out.WriteLine(World.GetWorldPopulation() + " world population, " + YearlyDeaths + " deaths, " + YearlyMarriages + " marriages, " + YearlyBirths + " births");
+            Thread.Sleep(100);
         }
 
         // TODO Make characters die at random ages, preserving an average length of life.
@@ -103,7 +104,7 @@ namespace LoreGenerator
                         else
                         {
                             toKill.Add(index);
-                            if(character.IsMarried)
+                            if (character.IsMarried)
                             {
                                 NullMarriage(continent, race, character);
                             }
@@ -125,11 +126,11 @@ namespace LoreGenerator
         {
             var couples = continent.Couples;
             int indexToRemove = 0;
-            foreach(Couple couple in couples[race])
+            foreach (Couple couple in couples[race])
             {
                 Character husband = couple.Husband;
                 Character wife = couple.Wife;
-                if((husband.Name == character.Name && husband.Age == character.Age) ||
+                if ((husband.Name == character.Name && husband.Age == character.Age) ||
                     (wife.Name == character.Name && wife.Age == character.Age))
                 {
                     husband.IsMarried = false;
@@ -139,7 +140,7 @@ namespace LoreGenerator
                 indexToRemove++;
             }
             couples[race].RemoveAt(indexToRemove);
-            if(couples[race].Count == 0)
+            if (couples[race].Count == 0)
             {
                 couples.Remove(race);
             }
@@ -174,7 +175,7 @@ namespace LoreGenerator
                                     candidate1.MarryTo(candidate2);
                                     candidate2.MarryTo(candidate1);
                                     Couple couple;
-                                    if(candidate1.Male)
+                                    if (candidate1.Male)
                                     {
                                         couple = new Couple(candidate1, candidate2);
                                     }
@@ -205,7 +206,7 @@ namespace LoreGenerator
                 bool femaleAttractive = female.Attractiveness >= Configuration.MIN_ATTRACTIVENESS_TO_MARRY;
                 bool maleRich = male.Wealth >= Configuration.MIN_WEALTH_TO_MARRY;
                 bool femaleRich = female.Wealth >= Configuration.MIN_WEALTH_TO_MARRY;
-                int randomChance = theRandom.Next(1, 101);
+                int randomChance = theRandom.Next(0, 100);
                 bool agesAreClose = (((male.Age / 2) + 7) < female.Age) && (female.Age < male.Age + 5);
 
                 // Minimum requirements are age. This must always be met.
@@ -259,10 +260,10 @@ namespace LoreGenerator
                     string race = raceCouples.Key;
                     List<Couple> couples = raceCouples.Value;
 
-                    foreach(Couple couple in couples)
+                    foreach (Couple couple in couples)
                     {
                         Character child = couple.ConditionallyGiveBirth();
-                        if(child != null)
+                        if (child != null)
                         {
                             TotalBirths++;
                             YearlyBirths++;
@@ -274,6 +275,17 @@ namespace LoreGenerator
                         }
                     }
                 }
+            }
+        }
+
+        private void GenerateEvents()
+        {
+            int chance = theRandom.Next(0, 100);
+
+            if (chance < Configuration.EVENT_CHANCE)
+            {
+                IWorldEvent worldEvent = EventFactory.GenerateRandomEvent();
+                worldEvent.ActOnWorld(World);
             }
         }
 

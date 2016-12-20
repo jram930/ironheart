@@ -38,7 +38,7 @@ namespace LoreGenerator
 
         public Character ConditionallyGiveBirth()
         {
-            int chance = theRandom.Next(1, 101);
+            int chance = theRandom.Next(0, 100);
 
             Character child = null;
 
@@ -109,7 +109,7 @@ namespace LoreGenerator
 
         private bool ShouldMutate()
         {
-            int mutateChance = theRandom.Next(1, 101);
+            int mutateChance = theRandom.Next(0, 100);
             bool mutate = false;
             if (mutateChance < Configuration.CHANCE_OF_TRAIT_MUTATION)
             {

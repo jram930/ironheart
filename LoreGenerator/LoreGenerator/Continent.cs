@@ -117,7 +117,7 @@ namespace LoreGenerator
                 for (int j = 0; j < numCharacters; j++)
                 {
                     string characterName = theNameGen.GenerateCharacterName();
-                    int age = theRandom.Next(1, Configuration.MAX_CHARACTER_AGE+1);
+                    int age = theRandom.Next(1, Configuration.MAX_CHARACTER_AGE + 1);
                     var character = new Character(raceName, characterName, age);
                     Characters[raceName].Add(character);
                 }
@@ -127,17 +127,82 @@ namespace LoreGenerator
 
         public void AddCouple(string race, Couple couple)
         {
-            if(Couples == null)
+            if (Couples == null)
             {
                 Couples = new Dictionary<string, List<Couple>>();
             }
 
-            if(!Couples.ContainsKey(race))
+            if (!Couples.ContainsKey(race))
             {
                 Couples.Add(race, new List<Couple>());
             }
 
             Couples[race].Add(couple);
+        }
+
+        public Character KillRandomCharacter(string race)
+        {
+            int randomDeath = theRandom.Next(0, Characters[race].Count);
+            Character killedChar = Characters[race][randomDeath];
+            KillCharacter(race, killedChar);
+            return killedChar;
+        }
+
+        public void KillCharacter(string race, Character character)
+        {
+            // Handle marriage.
+            int index = 0;
+            if (character.IsMarried)
+            {
+                foreach (Couple couple in Couples[race])
+                {
+                    if (couple.Husband.Name == character.Name && couple.Husband.Age == character.Age)
+                    {
+                        couple.Wife.IsMarried = false;
+                        couple.Wife.Spouse = null;
+                        break;
+                    }
+                    else if (couple.Wife.Name == character.Name && couple.Wife.Age == character.Age)
+                    {
+                        couple.Husband.IsMarried = false;
+                        couple.Husband.Spouse = null;
+                        break;
+                    }
+                    index++;
+                }
+
+                if(index < Couples[race].Count)
+                {
+                    Couples[race].RemoveAt(index);
+                }
+            }
+
+            // Handle children.
+            index = 0;
+            int foundIndex = -1;
+            foreach(Character c in Characters[race])
+            {
+                if(c.Name == character.Name && c.Age == character.Age)
+                {
+                    foundIndex = index;
+                }
+
+                if(c.Father.Name == character.Name && c.Father.Age == character.Age)
+                {
+                    c.Father = null;
+                }
+                else if (c.Mother.Name == character.Name && c.Mother.Age == character.Age)
+                {
+                    c.Mother = null;
+                }
+                index++;
+            }
+
+            // Remove character.
+            if(foundIndex != -1)
+            {
+                Characters[race].RemoveAt(foundIndex);
+            }
         }
 
         #endregion

@@ -80,7 +80,7 @@ namespace LoreGenerator
 
         private bool DetermineIfMale()
         {
-            int chance = theRandom.Next(1, 101);
+            int chance = theRandom.Next(0, 100);
 
             if(chance < 50)
             {
@@ -107,6 +107,7 @@ namespace LoreGenerator
                 "Name: " + Name + ", " +
                 "Male: " + Male + ", " +
                 "Age: " + Age + ", " +
+                "IsMarried: " + IsMarried + ", " +
                 "Attractiveness: " + Attractiveness + ", " +
                 "Wealth: " + Wealth + ", " +
                 "Bravery: " + Bravery + ", " +

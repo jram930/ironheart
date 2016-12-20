@@ -159,7 +159,7 @@ namespace LoreGenerator
         /// <summary>
         /// The number of times to attempt to pair mates in a year.
         /// </summary>
-        public const int MARRIAGE_ATTEMPTS_PER_YEAR = 3000;
+        public const int MARRIAGE_ATTEMPTS_PER_YEAR = 1000;
 
         /// <summary>
         /// The minimum age before two characters can marry.
@@ -185,5 +185,30 @@ namespace LoreGenerator
         /// Chance that a trait of the child will be totally different than the parents'.
         /// </summary>
         public const int CHANCE_OF_TRAIT_MUTATION = 20;
+
+        /// <summary>
+        /// The shortest a name of a natural disaster can be.
+        /// </summary>
+        public const int MIN_DISASTER_NAME_LEN = 4;
+
+        /// <summary>
+        /// The longest a name of a natural disaster can be.
+        /// </summary>
+        public const int MAX_DISASTER_NAME_LEN = 9;
+
+        /// <summary>
+        /// Chance of a random event occuring each year.
+        /// </summary>
+        public const int EVENT_CHANCE = 10;
+
+        /// <summary>
+        /// The minimum number of people that can be killed in an earthquake.
+        /// </summary>
+        public const int MIN_KILLED_EARTHQUAKE = 10;
+
+        /// <summary>
+        /// The maximum number of people that can be killed in an earthquake.
+        /// </summary>
+        public const int MAX_KILLED_EARTHQUAKE = 100;
     }
 }

@@ -27,9 +27,9 @@ namespace LoreGenerator
         public string GenerateLocationName()
         {
             //TODO For now just generating a random name that will most likely look like garbage.
-            int nameLength = theRandom.Next(Configuration.MIN_LOCATION_NAME_LEN, Configuration.MAX_LOCATION_NAME_LEN+1);
+            int nameLength = theRandom.Next(Configuration.MIN_LOCATION_NAME_LEN, Configuration.MAX_LOCATION_NAME_LEN + 1);
             StringBuilder builder = new StringBuilder();
-            for(int i=0; i<nameLength; i++)
+            for (int i = 0; i < nameLength; i++)
             {
                 builder.Append(((char)theRandom.Next(MIN_ASCII, MAX_ASCII)).ToString());
             }
@@ -40,7 +40,7 @@ namespace LoreGenerator
         public string GenerateCreatureName()
         {
             //TODO For now just generating a random name that will most likely look like garbage.
-            int nameLength = theRandom.Next(Configuration.MIN_CREATURE_NAME_LEN, Configuration.MAX_CREATURE_NAME_LEN+1);
+            int nameLength = theRandom.Next(Configuration.MIN_CREATURE_NAME_LEN, Configuration.MAX_CREATURE_NAME_LEN + 1);
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < nameLength; i++)
             {
@@ -53,7 +53,7 @@ namespace LoreGenerator
         public string GenerateRaceName()
         {
             //TODO For now just generating a random name that will most likely look like garbage.
-            int nameLength = theRandom.Next(Configuration.MIN_RACE_NAME_LEN, Configuration.MAX_RACE_NAME_LEN+1);
+            int nameLength = theRandom.Next(Configuration.MIN_RACE_NAME_LEN, Configuration.MAX_RACE_NAME_LEN + 1);
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < nameLength; i++)
             {
@@ -67,6 +67,19 @@ namespace LoreGenerator
         {
             //TODO For now just generating a random name that will most likely look like garbage.
             int nameLength = theRandom.Next(Configuration.MIN_CHARACTER_NAME_LEN, Configuration.MAX_CHARACTER_NAME_LEN + 1);
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < nameLength; i++)
+            {
+                builder.Append(((char)theRandom.Next(MIN_ASCII, MAX_ASCII)).ToString());
+            }
+
+            return builder.ToString();
+        }
+
+        public string GenerateNaturalDisasterName()
+        {
+            //TODO For now just generating a random name that will most likely look like garbage.
+            int nameLength = theRandom.Next(Configuration.MIN_DISASTER_NAME_LEN, Configuration.MAX_DISASTER_NAME_LEN + 1);
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < nameLength; i++)
             {
