@@ -85,16 +85,15 @@ namespace LoreGenerator
         {
             foreach (Continent continent in World.Continents)
             {
-                foreach (KeyValuePair<string, List<Character>> raceCharacters in continent.Characters)
+                foreach (KeyValuePair<string, List<Character>> liveCharacters in continent.LiveCharacters)
                 {
-                    string race = raceCharacters.Key;
-                    List<Character> characters = raceCharacters.Value;
-                    List<int> toKill = new List<int>();
+                    string nationality = liveCharacters.Key;
+                    List<Character> characters = liveCharacters.Value;
                     if (characters.Count == 0)
                     {
-                        Console.Out.WriteLine("All characters of race " + race + " are dead.");
+                        Console.Out.WriteLine("All characters of nationality " + nationality + " are dead.");
                     }
-                    int index = 0;
+                    List<Character> toKill = new List<Character>();
                     foreach (Character character in characters)
                     {
                         if (character.Age <= Configuration.MAX_CHARACTER_AGE)
@@ -103,46 +102,16 @@ namespace LoreGenerator
                         }
                         else
                         {
-                            toKill.Add(index);
-                            if (character.IsMarried)
-                            {
-                                NullMarriage(continent, race, character);
-                            }
+                            toKill.Add(character);
                         }
-                        index++;
                     }
-                    toKill.Reverse();
-                    foreach (int death in toKill)
+                    foreach (Character kill in toKill)
                     {
                         TotalDeaths++;
                         YearlyDeaths++;
-                        characters.RemoveAt(death);
+                        continent.KillCharacter(kill);
                     }
                 }
-            }
-        }
-
-        private void NullMarriage(Continent continent, string race, Character character)
-        {
-            var couples = continent.Couples;
-            int indexToRemove = 0;
-            foreach (Couple couple in couples[race])
-            {
-                Character husband = couple.Husband;
-                Character wife = couple.Wife;
-                if ((husband.Name == character.Name && husband.Age == character.Age) ||
-                    (wife.Name == character.Name && wife.Age == character.Age))
-                {
-                    husband.IsMarried = false;
-                    wife.IsMarried = false;
-                    break;
-                }
-                indexToRemove++;
-            }
-            couples[race].RemoveAt(indexToRemove);
-            if (couples[race].Count == 0)
-            {
-                couples.Remove(race);
             }
         }
 
@@ -151,10 +120,10 @@ namespace LoreGenerator
         {
             foreach (Continent continent in World.Continents)
             {
-                foreach (KeyValuePair<string, List<Character>> raceCharacters in continent.Characters)
+                foreach (KeyValuePair<string, List<Character>> nationalityCharacters in continent.LiveCharacters)
                 {
-                    string race = raceCharacters.Key;
-                    List<Character> characters = raceCharacters.Value;
+                    string nationality = nationalityCharacters.Key;
+                    List<Character> characters = nationalityCharacters.Value;
 
                     if (characters.Count > 1)
                     {
@@ -183,7 +152,7 @@ namespace LoreGenerator
                                     {
                                         couple = new Couple(candidate2, candidate1);
                                     }
-                                    continent.AddCouple(race, couple);
+                                    continent.AddCouple(nationality, couple);
                                     TotalMarriages++;
                                     YearlyMarriages++;
                                 }
@@ -255,10 +224,10 @@ namespace LoreGenerator
         {
             foreach (Continent continent in World.Continents)
             {
-                foreach (KeyValuePair<string, List<Couple>> raceCouples in continent.Couples)
+                foreach (KeyValuePair<string, List<Couple>> nationalityCouples in continent.Couples)
                 {
-                    string race = raceCouples.Key;
-                    List<Couple> couples = raceCouples.Value;
+                    string nationality = nationalityCouples.Key;
+                    List<Couple> couples = nationalityCouples.Value;
 
                     foreach (Couple couple in couples)
                     {
@@ -267,7 +236,7 @@ namespace LoreGenerator
                         {
                             TotalBirths++;
                             YearlyBirths++;
-                            continent.Characters[race].Add(child);
+                            continent.LiveCharacters[nationality].Add(child);
                             couple.Husband.Children.Add(child);
                             couple.Wife.Children.Add(child);
                             child.Father = couple.Husband;

@@ -50,7 +50,7 @@ namespace LoreGenerator
             return builder.ToString();
         }
 
-        public string GenerateRaceName()
+        public string GenerateNationalityName()
         {
             //TODO For now just generating a random name that will most likely look like garbage.
             int nameLength = theRandom.Next(Configuration.MIN_RACE_NAME_LEN, Configuration.MAX_RACE_NAME_LEN + 1);

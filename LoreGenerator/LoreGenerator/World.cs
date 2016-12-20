@@ -24,7 +24,7 @@ namespace LoreGenerator
 
             foreach (Continent continent in Continents)
             {
-                foreach (List<Character> characters in continent.Characters.Values)
+                foreach (List<Character> characters in continent.LiveCharacters.Values)
                 {
                     foreach(Character character in characters)
                     {

@@ -10,7 +10,9 @@ namespace LoreGenerator
     {
         #region Properties
 
-        public string Race { get; set; }
+        public bool IsAlive { get; set; }
+
+        public string Nationality { get; set; }
 
         public string Name { get; set; }
 
@@ -50,9 +52,9 @@ namespace LoreGenerator
 
         #region Construction
 
-        public Character(string race, string name, int age = 0)
+        public Character(string nationality, string name, int age = 0)
         {
-            Race = race;
+            Nationality = nationality;
             Name = name;
             Age = age;
             Male = DetermineIfMale();
@@ -62,6 +64,7 @@ namespace LoreGenerator
             Bravery = AssignRandomTrait();
             Intelligence = AssignRandomTrait();
             Children = new List<Character>();
+            IsAlive = true;
         }
 
         #endregion
@@ -72,6 +75,11 @@ namespace LoreGenerator
         {
             IsMarried = true;
             Spouse = spouse;
+        }
+
+        public void Kill()
+        {
+            IsAlive = false;
         }
 
         #endregion
@@ -103,7 +111,8 @@ namespace LoreGenerator
 
         public override string ToString()
         {
-            string result = "Race: " + Race + ", " +
+            string result = "IsAlive: " + IsAlive + ", " +
+                "Nationality: " + Nationality + ", " +
                 "Name: " + Name + ", " +
                 "Male: " + Male + ", " +
                 "Age: " + Age + ", " +

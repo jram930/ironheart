@@ -95,7 +95,7 @@ namespace LoreGenerator
                 intelligence = theRandom.Next(1, 11);
             }
 
-            Character child = new Character(Husband.Race, theNameGen.GenerateCharacterName())
+            Character child = new Character(Husband.Nationality, theNameGen.GenerateCharacterName())
             {
                 Wealth = wealth,
                 Attractiveness = attractiveness,

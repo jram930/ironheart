@@ -19,7 +19,9 @@ namespace LoreGenerator
 
         public Dictionary<string, List<Creature>> Creatures { get; set; }
 
-        public Dictionary<string, List<Character>> Characters { get; set; }
+        public Dictionary<string, List<Character>> LiveCharacters { get; set; }
+
+        public Dictionary<string, List<Character>> DeadCharacters { get; set; }
 
         public Dictionary<string, List<Couple>> Couples { get; set; }
 
@@ -39,6 +41,7 @@ namespace LoreGenerator
         {
             Name = name;
             Size = size;
+            DeadCharacters = new Dictionary<string, List<Character>>();
         }
 
         #endregion
@@ -107,102 +110,110 @@ namespace LoreGenerator
         public void GenerateCharacters()
         {
             Console.Out.WriteLine("Generating characters for continent: " + Name);
-            Characters = new Dictionary<string, List<Character>>();
-            int numRaces = theRandom.Next(Configuration.MIN_RACE_COUNT, Configuration.MAX_RACE_COUNT + 1);
-            for (int i = 0; i < numRaces; i++)
+            LiveCharacters = new Dictionary<string, List<Character>>();
+            int numNationalitys = theRandom.Next(Configuration.MIN_RACE_COUNT, Configuration.MAX_RACE_COUNT + 1);
+            for (int i = 0; i < numNationalitys; i++)
             {
-                string raceName = theNameGen.GenerateRaceName();
-                Characters.Add(raceName, new List<Character>());
+                string nationalityName = theNameGen.GenerateNationalityName();
+                LiveCharacters.Add(nationalityName, new List<Character>());
                 int numCharacters = theRandom.Next(Configuration.MIN_POPULATION_COUNT, Configuration.MAX_POPULATION_COUNT);
                 for (int j = 0; j < numCharacters; j++)
                 {
                     string characterName = theNameGen.GenerateCharacterName();
                     int age = theRandom.Next(1, Configuration.MAX_CHARACTER_AGE + 1);
-                    var character = new Character(raceName, characterName, age);
-                    Characters[raceName].Add(character);
+                    var character = new Character(nationalityName, characterName, age);
+                    LiveCharacters[nationalityName].Add(character);
                 }
-                Console.WriteLine("Generated " + numCharacters + " characters of the race " + raceName + " on the continent " + Name);
+                Console.WriteLine("Generated " + numCharacters + " characters of the nationality " + nationalityName + " on the continent " + Name);
             }
         }
 
-        public void AddCouple(string race, Couple couple)
+        public void AddCouple(string nationality, Couple couple)
         {
             if (Couples == null)
             {
                 Couples = new Dictionary<string, List<Couple>>();
             }
 
-            if (!Couples.ContainsKey(race))
+            if (!Couples.ContainsKey(nationality))
             {
-                Couples.Add(race, new List<Couple>());
+                Couples.Add(nationality, new List<Couple>());
             }
 
-            Couples[race].Add(couple);
+            Couples[nationality].Add(couple);
         }
 
-        public Character KillRandomCharacter(string race)
+        public Character KillRandomCharacter(string nationality)
         {
-            int randomDeath = theRandom.Next(0, Characters[race].Count);
-            Character killedChar = Characters[race][randomDeath];
-            KillCharacter(race, killedChar);
+            int randomDeath = theRandom.Next(0, LiveCharacters[nationality].Count);
+            Character killedChar = LiveCharacters[nationality][randomDeath];
+            KillCharacter(killedChar);
             return killedChar;
         }
 
-        public void KillCharacter(string race, Character character)
+        public void KillCharacter(Character character)
         {
+            string nationality = character.Nationality;
+
             // Handle marriage.
             int index = 0;
             if (character.IsMarried)
             {
-                foreach (Couple couple in Couples[race])
+                foreach (Couple couple in Couples[nationality])
                 {
                     if (couple.Husband.Name == character.Name && couple.Husband.Age == character.Age)
                     {
                         couple.Wife.IsMarried = false;
-                        couple.Wife.Spouse = null;
                         break;
                     }
                     else if (couple.Wife.Name == character.Name && couple.Wife.Age == character.Age)
                     {
                         couple.Husband.IsMarried = false;
-                        couple.Husband.Spouse = null;
                         break;
                     }
                     index++;
                 }
 
-                if(index < Couples[race].Count)
+                if(index < Couples[nationality].Count)
                 {
-                    Couples[race].RemoveAt(index);
+                    Couples[nationality].RemoveAt(index);
                 }
             }
 
-            // Handle children.
+            // Remove from live list.
             index = 0;
             int foundIndex = -1;
-            foreach(Character c in Characters[race])
+            foreach(Character c in LiveCharacters[nationality])
             {
                 if(c.Name == character.Name && c.Age == character.Age)
                 {
                     foundIndex = index;
                 }
 
-                if(c.Father.Name == character.Name && c.Father.Age == character.Age)
-                {
-                    c.Father = null;
-                }
-                else if (c.Mother.Name == character.Name && c.Mother.Age == character.Age)
-                {
-                    c.Mother = null;
-                }
                 index++;
             }
 
-            // Remove character.
+            // Kill character.
             if(foundIndex != -1)
             {
-                Characters[race].RemoveAt(foundIndex);
+                character.Kill();
+                LiveCharacters[nationality].RemoveAt(foundIndex);
+                AddToDeadCharacters(character);
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddToDeadCharacters(Character character)
+        {
+            if (!DeadCharacters.ContainsKey(character.Nationality))
+            {
+                DeadCharacters.Add(character.Nationality, new List<Character>());
+            }
+
+            DeadCharacters[character.Nationality].Add(character);
         }
 
         #endregion

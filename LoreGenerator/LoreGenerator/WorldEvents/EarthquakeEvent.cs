@@ -23,40 +23,40 @@ namespace LoreGenerator
             int randomContinent = theRandom.Next(0, world.Continents.Count);
             Continent continent = world.Continents[randomContinent];
             int randomDeathCount = theRandom.Next(Configuration.MIN_KILLED_EARTHQUAKE, Configuration.MAX_KILLED_EARTHQUAKE + 1);
-            int randomRace = theRandom.Next(0, continent.Characters.Keys.Count);
-            string race = "";
+            int randomNationality = theRandom.Next(0, continent.LiveCharacters.Keys.Count);
+            string nationality = "";
             List<Character> characters = new List<Character>();
             List<Couple> couples = new List<Couple>();
             int index = 0;
-            foreach (KeyValuePair<string, List<Character>> raceChars in continent.Characters)
+            foreach (KeyValuePair<string, List<Character>> nationalityChars in continent.LiveCharacters)
             {
-                if (index == randomRace)
+                if (index == randomNationality)
                 {
-                    race = raceChars.Key;
-                    characters = raceChars.Value;
+                    nationality = nationalityChars.Key;
+                    characters = nationalityChars.Value;
                     break;
                 }
                 index++;
             }
-            foreach (KeyValuePair<string, List<Couple>> raceCouples in continent.Couples)
+            foreach (KeyValuePair<string, List<Couple>> nationalityCouples in continent.Couples)
             {
-                if (index == randomRace)
+                if (index == randomNationality)
                 {
-                    race = raceCouples.Key;
-                    couples = raceCouples.Value;
+                    nationality = nationalityCouples.Key;
+                    couples = nationalityCouples.Value;
                     break;
                 }
                 index++;
             }
             string disasterName = theNameGen.GenerateNaturalDisasterName();
-            int racePopulation = characters.Count;
-            int actualDeathCount = Math.Min(randomDeathCount, racePopulation);
+            int natPopulation = characters.Count;
+            int actualDeathCount = Math.Min(randomDeathCount, natPopulation);
 
-            Console.Out.WriteLine("The " + disasterName + " earthquake killed " + actualDeathCount + " of " + racePopulation + " characters of the " + race + " race");
+            Console.Out.WriteLine("The " + disasterName + " earthquake killed " + actualDeathCount + " of " + natPopulation + " characters of the " + nationality + " nation");
 
             for (int i = 0; i < actualDeathCount; i++)
             {
-                continent.KillRandomCharacter(race);
+                continent.KillRandomCharacter(nationality);
             }
         }
 

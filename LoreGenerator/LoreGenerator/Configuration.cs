@@ -102,32 +102,32 @@ namespace LoreGenerator
         public const int CREATURE_RARITY_LEGENDARY = 20;
 
         /// <summary>
-        /// The minimum number of races to put on each continent.
+        /// The minimum number of nationalitys to put on each continent.
         /// </summary>
         public const int MIN_RACE_COUNT = 2;
 
         /// <summary>
-        /// The maximum number of races to put on each continent.
+        /// The maximum number of nationalitys to put on each continent.
         /// </summary>
         public const int MAX_RACE_COUNT = 5;
 
         /// <summary>
-        /// The minimum number of characters for each race to generate.
+        /// The minimum number of characters for each nationality to generate.
         /// </summary>
         public const int MIN_POPULATION_COUNT = 1000;
 
         /// <summary>
-        /// The maximum number of characters for each race to generate.
+        /// The maximum number of characters for each nationality to generate.
         /// </summary>
         public const int MAX_POPULATION_COUNT = 10000;
 
         /// <summary>
-        /// The shortest a name of a race can be.
+        /// The shortest a name of a nationality can be.
         /// </summary>
         public const int MIN_RACE_NAME_LEN = 5;
 
         /// <summary>
-        /// The longest a name of a race can be.
+        /// The longest a name of a nationality can be.
         /// </summary>
         public const int MAX_RACE_NAME_LEN = 8;
 
